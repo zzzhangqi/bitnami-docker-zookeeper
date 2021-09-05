@@ -13,6 +13,7 @@ set -o pipefail
 . /opt/bitnami/scripts/libzookeeper.sh
 
 # Load ZooKeeper environment variables
+. /opt/bitnami/scripts/zookeeper/rainbond-env.sh
 . /opt/bitnami/scripts/zookeeper-env.sh
 
 print_welcome_page

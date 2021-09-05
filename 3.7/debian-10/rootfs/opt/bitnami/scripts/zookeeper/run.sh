@@ -13,6 +13,7 @@ set -o pipefail
 . /opt/bitnami/scripts/liblog.sh
 
 # Load ZooKeeper environment variables
+. /opt/bitnami/scripts/zookeeper/rainbond-env.sh
 . /opt/bitnami/scripts/zookeeper-env.sh
 
 START_COMMAND=("${ZOO_BASE_DIR}/bin/zkServer.sh" "start-foreground" "$@")
