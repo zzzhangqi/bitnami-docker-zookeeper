@@ -19,8 +19,10 @@ for (( i = 0;i < $SERVICE_POD_NUM;i++)); do
     fi
 done
 
-echo "zookeeper cluster nodes are ${ZOO_SERVERS_LIST[@]}"
-export ZOO_SERVERS=$(echo ${ZOO_SERVERS_LIST[@]} | tr ' ' ',')
+if [ $SERVICE_POD_NUM != 1 ]; then
+    echo "zookeeper cluster nodes are ${ZOO_SERVERS_LIST[@]}"
+    export ZOO_SERVERS=$(echo ${ZOO_SERVERS_LIST[@]} | tr ' ' ',')
+fi
 
 # set default_java_mem_opts
 case ${MEMORY_SIZE} in
