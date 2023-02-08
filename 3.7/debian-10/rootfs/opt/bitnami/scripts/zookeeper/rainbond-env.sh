@@ -10,19 +10,7 @@ set -o pipefail
 export ZOO_SERVER_ID=`expr ${HOSTNAME#*-} + 1`
 
 # define zookeeper server list
-
-ZOO_SERVERS_LIST=()
-
-for (( i = 0;i < $SERVICE_POD_NUM;i++)); do
-    if [ $SERVICE_POD_NUM != 1 ]; then
-        ZOO_SERVERS_LIST[$i]="$SERVICE_NAME-$i.$SERVICE_NAME:2888:3888"
-    fi
-done
-
-if [ $SERVICE_POD_NUM != 1 ]; then
-    echo "zookeeper cluster nodes are ${ZOO_SERVERS_LIST[@]}"
-    export ZOO_SERVERS=$(echo ${ZOO_SERVERS_LIST[@]} | tr ' ' ',')
-fi
+export ZOO_SERVERS=${SERVICE_NAME}-0.${SERVICE_NAME}:2888:3888,${SERVICE_NAME}-1.${SERVICE_NAME}:2888:3888,${SERVICE_NAME}-2.${SERVICE_NAME}:2888:3888
 
 # set default_java_mem_opts
 case ${MEMORY_SIZE} in
