@@ -7,10 +7,23 @@ set -o pipefail
 ## This script works with Rainbond
 
 # define zookeeper id
-export ZOO_SERVER_ID=`expr ${HOSTNAME#*-} + 1`
+export ZOO_SERVER_ID=${HOSTNAME##*-}
 
 # define zookeeper server list
-export ZOO_SERVERS=${SERVICE_NAME}-0.${SERVICE_NAME}:2888:3888,${SERVICE_NAME}-1.${SERVICE_NAME}:2888:3888,${SERVICE_NAME}-2.${SERVICE_NAME}:2888:3888
+if [[ "${ZOO_SERVER_ID}" == "0" ]]; then
+  export ZOO_SERVERS=0.0.0.0:2888:3888,${SERVICE_NAME}-1.${SERVICE_NAME}:2888:3888,${SERVICE_NAME}-2.${SERVICE_NAME}:2888:3888
+  echo "${ZOO_SERVERS}"
+fi
+
+if [[ "${ZOO_SERVER_ID}" == "1" ]]; then
+  export ZOO_SERVERS=${SERVICE_NAME}-0.${SERVICE_NAME}:2888:3888,0.0.0.0:2888:3888,${SERVICE_NAME}-2.${SERVICE_NAME}:2888:3888
+  echo "${ZOO_SERVERS}"
+fi
+
+if [[ "${ZOO_SERVER_ID}" == "2" ]]; then
+  export ZOO_SERVERS=${SERVICE_NAME}-0.${SERVICE_NAME}:2888:3888,${SERVICE_NAME}-1.${SERVICE_NAME}:2888:3888,0.0.0.0:2888:3888
+  echo "${ZOO_SERVERS}"
+fi
 
 # set default_java_mem_opts
 case ${MEMORY_SIZE} in
